@@ -1,6 +1,6 @@
 export type Mood = 'idle' | 'working' | 'done'
 
-/** 我正在用的工具類型：讀檔、寫檔、執行指令、上網；null = 思考中 */
+/** 正在用的工具類型：讀檔、寫檔、執行指令、上網；null = 思考中 */
 export type Activity = 'read' | 'write' | 'run' | 'web' | null
 
 export type Meter = {
@@ -12,6 +12,26 @@ export type Meter = {
   sevenDay: number | null
 }
 
+/** 主角從哪走到哪（工作中跑去對應工作站） */
+export type Travel = {
+  /** 起點 x（格） */
+  from: number
+  /** 終點 x（格） */
+  to: number
+  /** 抵達後面向：1 右、-1 左 */
+  face: number
+  /** 出發時間（$.clock.now 毫秒） */
+  at: number
+}
+
+/** 一個正在跑的 subagent，畫成一隻小 clawd */
+export type Helper = {
+  id: string
+  activity: Activity
+  /** 出現時間（$.clock.now 毫秒） */
+  since: number
+}
+
 declare module 'claude-code' {
   interface PluginState {
     'clawd-buddy': {
@@ -20,6 +40,8 @@ declare module 'claude-code' {
       isHidden: boolean
       outfit: number
       activity: Activity
+      travel: Travel
+      helpers: Helper[]
     }
   }
 }

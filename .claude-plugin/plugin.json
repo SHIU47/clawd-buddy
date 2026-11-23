@@ -1,7 +1,7 @@
 {
   "name": "clawd-buddy",
-  "version": "0.2.0",
-  "description": "輸入框上方的橘色小吉祥物，表情跟著 Claude 狀態變，旁邊顯示 context 與額度用量",
+  "version": "0.3.0",
+  "description": "輸入框上方的像素小工作室：小吉祥物依工作跑到對應工作站、subagent 會變出小幫手，附 context 與額度進度條（不耗 token）",
   "types": "./types/index.d.ts",
   "license": "MIT",
   "author": {
