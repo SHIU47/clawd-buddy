@@ -408,15 +408,28 @@ async function goTo($: EngineInterface, a: Activity) {
   await update($, travel, () => ({ from: Math.round(cur), to: sp.x, face: sp.face, at: now }))
 }
 
+const METER_REFRESH_MS = 15_000 // 每 15 秒讀一次用量（讀數免費，不耗 token）
+
+/** 讀最新用量；有變才寫入，避免畫面無謂重畫 */
+async function refreshMeter($: EngineInterface) {
+  const u = await $.session.usage()
+  const nm = toMeter(u.context, u.rateLimits)
+  const old = await read($, meter)
+  if (old.context !== nm.context || old.fiveHour !== nm.fiveHour || old.sevenDay !== nm.sevenDay) {
+    await update($, meter, () => nm)
+  }
+}
+
 export const register: Register = on => {
+  let meterTimer: { cancel: () => void } | null = null
+
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'clawd', description: '顯示／隱藏輸入框上方的小吉祥物' })
-    try {
-      const u = await $.session.usage()
-      await update($, meter, () => toMeter(u.context, u.rateLimits))
-    } catch {
-      // 尚無讀數就先空著，等 session.measure 推送
-    }
+    await refreshMeter($).catch(() => undefined) // 尚無讀數就先空著
+    meterTimer?.cancel()
+    meterTimer = $.clock.every(METER_REFRESH_MS, () => {
+      void refreshMeter($).catch(() => undefined)
+    })
     return next(e)
   })
 
@@ -443,6 +456,7 @@ export const register: Register = on => {
 
   on('tool.call', async ($, e, next) => {
     await (async () => {
+      await refreshMeter($) // 每次呼叫工具前，順手更新用量
       const a = activityOf(e.tool)
       if (e.agentId) {
         // subagent 的工具：只動那隻小幫手

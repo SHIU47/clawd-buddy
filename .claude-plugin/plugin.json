@@ -1,6 +1,6 @@
 {
   "name": "clawd-buddy",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "輸入框上方的像素小工作室：小吉祥物依工作跑到對應工作站、subagent 會變出小幫手，附 context 與額度進度條（不耗 token）",
   "types": "./types/index.d.ts",
   "license": "MIT",
