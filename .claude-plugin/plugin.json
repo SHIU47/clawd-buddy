@@ -1,0 +1,11 @@
+{
+  "name": "clawd-buddy",
+  "version": "0.2.0",
+  "description": "輸入框上方的橘色小吉祥物，表情跟著 Claude 狀態變，旁邊顯示 context 與額度用量",
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "SHIU47"
+  },
+  "repository": "https://github.com/SHIU47/clawd-buddy"
+}

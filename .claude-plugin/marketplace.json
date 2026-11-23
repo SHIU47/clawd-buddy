@@ -1,0 +1,13 @@
+{
+  "name": "clawd-buddy",
+  "owner": {
+    "name": "SHIU47"
+  },
+  "plugins": [
+    {
+      "name": "clawd-buddy",
+      "source": "./"
+    }
+  ],
+  "description": "Claude Code 輸入框上方的像素小吉祥物與用量進度條（不耗 token）"
+}
